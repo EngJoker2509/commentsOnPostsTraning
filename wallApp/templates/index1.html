@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <title>The Wall</title>
+</head>
+<style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .right-header a,
+    h1 {
+        display: inline;
+    }
+
+    .body {
+        margin-left: 300px;
+    }
+</style>
+
+<body>
+    <header>
+        <h3>Coding Dojo</h3>
+        <div class="right-header">
+            <h3>{{ request.session.username }}</h3>
+            <a href="{% url 'Thewall:destroy' %}">Log Out</a>
+            <div>
+                <a href="wall">Wall Page</a>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <div class="body">
+        <form action="{% url 'Thewall:index' %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <div class="form-group">
+                    <textarea name="message" class="form-control" placeholder="write a message .."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Post a message</button>
+            </fieldset>
+        </form>
+        {% for info in all_messages %}
+        <h1 class="font-weight-normal font-italic border-dark"> Posted By :- {{ info.Users.first_name }}</h1>
+        <p class="font-weight-normal font-italic border-dark">
+            Your Message is :- {{ info.message }}
+        </p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
